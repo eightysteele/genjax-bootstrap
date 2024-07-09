@@ -643,11 +643,11 @@ __wrap__() {
 		printf "  ✓ gcloud %s installed (%s)\n\n" "$v" "$p"
 
 		# initialize and authenticate gcloud
-		echo "init gcloud..."
-		if ! gcloud-init; then
-			echo "gcloud not initialized"
-			exit 1
-		fi
+		#echo "init gcloud..."
+		#if ! gcloud-init; then
+		#	echo "gcloud not initialized"
+		#	exit 1
+		#fi
 		echo "authenticating gcloud credentials..."
 		if ! gcloud-auth-adc; then
 			echo "gcloud not authenticated"

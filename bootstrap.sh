@@ -143,7 +143,7 @@ __wrap__() {
 	}
 
 	gcloud-auth-adc() {
-		if ! gcloud auth application-default login --no-launch-browser; then
+		if ! gcloud auth application-default login --no-browser; then
 			return 1
 		fi
 		return 0

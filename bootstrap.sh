@@ -135,7 +135,7 @@ __wrap__() {
 	}
 
 	gcloud-init() {
-		if ! gcloud init --console-only; then
+		if ! gcloud init; then
 			return 1
 		else
 			return 0

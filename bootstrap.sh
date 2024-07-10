@@ -212,196 +212,87 @@ __wrap__() {
 			{
 			 "cells": [
 			  {
-			   "cell_type": "raw",
-			   "metadata": {},
-			   "source": [
-			    "---\n",
-			    "title: Generative functions\n",
-			    "subtitle: What is a generative function and how to use it?\n",
-			    "--- "
-			   ]
-			  },
-			  {
 			   "cell_type": "code",
 			   "execution_count": null,
+			   "id": "ebbdee30-9a85-4ea9-abb2-be64e7a83bb1",
 			   "metadata": {},
 			   "outputs": [],
 			   "source": [
-			    "import jax\n",
-			    "from genjax import bernoulli, beta, gen, pretty\n",
+			    "import timeit\n",
 			    "\n",
-			    "pretty()"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "The following is a simple  of a beta-bernoulli process. We use the $(@gen) decorator to create generative functions."
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
+			    "import jax\n",
+			    "import jax.numpy as jnp\n",
+			    "import genjax\n",
+			    "from genjax import beta, flip, gen, Target, ChoiceMap\n",
+			    "from genjax.inference.smc import ImportanceK\n",
+			    "\n",
 			    "@gen\n",
-			    "def beta_bernoulli_process(u):\n",
-			    "    p = beta(0.0, u) @ \"p\"\n",
-			    "    v = bernoulli(p) @ \"v\"\n",
-			    "    return v"
+			    "def beta_bernoulli(α, β):\n",
+			    "    \"\"\"Define the generative model.\"\"\"\n",
+			    "    p = beta(α, β) @ 'p'\n",
+			    "    v = flip(p) @ \"v\"\n",
+			    "    return v\n",
+			    "\n",
+			    "def run_inference(obs: bool, platform='cpu'):\n",
+			    "    \"\"\"Estimate $(p) over 50 independent trials of SIR (K = 50 particles).\"\"\"\n",
+			    "    # Set the device\n",
+			    "    device = jax.devices(platform)[0]\n",
+			    "    key = jax.random.PRNGKey(314159)\n",
+			    "    key = jax.device_put(key, device)\n",
+			    "\n",
+			    "    # JIT compilation will be target-specific based on device (CPU or GPU)\n",
+			    "    @jax.jit\n",
+			    "    def execute_inference():\n",
+			    "        # Inference query with the a model, arguments, and constraints\n",
+			    "        posterior = Target(beta_bernoulli, (2.0, 2.0), ChoiceMap.d({\"v\": obs}))\n",
+			    "\n",
+			    "        # Use a library algorithm, or design your own—more on that in the docs!\n",
+			    "        alg = ImportanceK(posterior, k_particles=50)\n",
+			    "\n",
+			    "        # Everything is JAX compatible by default—jit, vmap, etc.\n",
+			    "        skeys = jax.random.split(key, 50)\n",
+			    "        _, p_chm = jax.vmap(\n",
+			    "            alg.random_weighted, in_axes=(0, None))(skeys, posterior)\n",
+			    "\n",
+			    "        return jnp.mean(p_chm['p'])\n",
+			    "\n",
+			    "    return execute_inference\n",
+			    "\n",
+			    "\n",
+			    "n = 1000\n",
+			    "print(f\"\Starting GenJax demo with {n} runs...\")\n",
+			    "\n",
+			    "# CPU compile, execute, benchmark, profile\n",
+			    "cpu_jit = jax.jit(run_inference(True, 'cpu'))\n",
+			    "cpu_jit().block_until_ready()\n",
+			    "ms = timeit.timeit(\n",
+			    "    'cpu_jit()',\n",
+			    "    globals=globals(),\n",
+			    "    number=n\n",
+			    ") / n * 1000\n",
+			    "print(f\"CPU: Average runtime over {n} runs = {ms} (ms)\")\n",
+			    "\n",
+			    "# GPU compile, execute, benchmark, profile\n",
+			    "gpu_jit = jax.jit(run_inference(True, 'cpu'))\n",
+			    "gpu_jit().block_until_ready()\n",
+			    "try:\n",
+			    "    jax.devices('gpu')\n",
+			    "    ms = timeit.timeit(\n",
+			    "        'gpu_jit',\n",
+			    "        globals=globals(),\n",
+			    "        number=n\n",
+			    "    ) / n * 1000\n",
+			    "    print(f\"GPU: Average runtime over {n} runs = {ms} (ms)\")\n",
+			    "except RuntimeError as e:\n",
+			    "    print(\"(No GPU device on host)\")\n",
+			    "\n",
+			    "print(\"Done!\")"
 			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "We can now call the generative function with a specified random key"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "key = jax.random.PRNGKey(314159)"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "Running the function will return a trace, which records the arguments, random choices made, and the return value"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "tr = beta_bernoulli_process.simulate(key, (1.0,))"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "We can print the trace to see what happened"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "print(tr.args)\n",
-			    "print()\n",
-			    "print(tr.get_sample())\n",
-			    "print()\n",
-			    "print(tr.get_retval())"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "GenJAX functions can be accelerated with $(jit) compilation. "
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "The non-optimal way is within the $(@gen) decorator."
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "@gen\n",
-			    "@jax.jit\n",
-			    "def fast_beta_bernoulli_process(u):\n",
-			    "    p = beta(0.0, u) @ \"p\"\n",
-			    "    v = bernoulli(p) @ \"v\"  # sweet\n",
-			    "    return v"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "And the better way is to $(jit) the final function we aim to run"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "jitted = jax.jit(beta_bernoulli_process.simulate)"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "We can then compare the speed of the three functions"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "key = jax.random.PRNGKey(314159)"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": [
-			    "To fairly compare we need to run the functions once to compile them"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "fast_beta_bernoulli_process.simulate(key, (1.0,))\n",
-			    "jitted(key, (1.0,))"
-			   ]
-			  },
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "%timeit beta_bernoulli_process.simulate(key, (1.0,))\n",
-			    "%timeit fast_beta_bernoulli_process.simulate(key, (1.0,))\n",
-			    "%timeit jitted(key, (1.0,))"
-			   ]
-			  },
-			  {
-			   "cell_type": "markdown",
-			   "metadata": {},
-			   "source": []
 			  }
 			 ],
 			 "metadata": {
 			  "kernelspec": {
-			   "display_name": "genjax-trials",
+			   "display_name": "Python 3 (ipykernel)",
 			   "language": "python",
 			   "name": "python3"
 			  },
@@ -415,11 +306,11 @@ __wrap__() {
 			   "name": "python",
 			   "nbconvert_exporter": "python",
 			   "pygments_lexer": "ipython3",
-			   "version": "3.11.4"
+			   "version": "3.12.4"
 			  }
 			 },
 			 "nbformat": 4,
-			 "nbformat_minor": 2
+			 "nbformat_minor": 5
 			}
 		EOF
 	}
@@ -462,7 +353,7 @@ __wrap__() {
 			        _, p_chm = jax.vmap(
 			            alg.random_weighted, in_axes=(0, None))(skeys, posterior)
 
-			        return jnp.mean(p_chm["p"])
+			        return jnp.mean(p_chm['p'])
 
 			    return execute_inference
 
@@ -552,7 +443,7 @@ __wrap__() {
 		popd
 
 		pushd notebooks
-		project-notebook-demo >demo.py
+		project-notebook-demo >demo.ipynb
 		popd
 	}
 
@@ -725,8 +616,34 @@ __wrap__() {
 		popd
 	}
 
+	prompt-user() {
+		local os=$(uname -s)
+		local arch=$(uname -m)
+
+		printf "This script will bootstrap a new project into a virtual GenJax development environment for %s %s.\n\n" $os $arch
+
+		read -p "Do you want to continue? (y/n): " choice
+
+		case "$choice" in
+		y | Y)
+			echo "Bootstrapping..."
+			return 0
+			;;
+		n | N)
+			echo "Aborting."
+			return 1
+			;;
+		*)
+			echo "Invalid input. Please enter 'y' to continue or 'n' to abort."
+			exit 1
+			;;
+		esac
+	}
+
 	init-dev-environment() {
-		echo "HOME $HOME"
+		if ! prompt-user; then
+			exit 1
+		fi
 
 		local shell=""
 		local shell_config=""
@@ -841,34 +758,38 @@ __wrap__() {
 		# fi
 		# printf "  ✓ gcloud initialized and authenticated\n\n"
 
-		# # initialize project
-		# echo "initializing project..."
-		# if ! project-init; then
-		# 	echo "couldn't initialize project"
-		# 	exit 1
-		# fi
-		# printf "  ✓ project initialized\n\n"
+		# initialize project
+		echo "initializing project..."
+		if ! init-project; then
+			echo "couldn't initialize project"
+			exit 1
+		fi
+		printf "  ✓ project initialized\n\n"
 
-		# # pixi install
-		# echo "installing project environments..."
-		# pushd "$PROJECT_NAME"
-		# if ! pixi install; then
-		# 	echo "couldn't initialize project"
-		# 	exit 1
-		# fi
-		# popd
-		printf "  ✓ dev environment installed\n\n"
+		pushd "$PROJECT_NAME"
+
+		# initialize project files
+		echo "initializing project files..."
+		if ! init-project-files; then
+			echo "couldn't initialize project files"
+			exit 1
+		fi
+		printf "  ✓ project files initialized\n\n"
+
+		# initialize project repo
+		echo "initializing project repo..."
+		if ! init-project-repo; then
+			echo "couldn't initialize project repo"
+			exit 1
+		fi
+		printf "  ✓ project repo initialized\n\n"
+
+		pixi task list
 
 		printf "\nbootstrap complete! run this command and you're done:\n"
-		printf "  → source %s\n" "$shell_config\n"
+		printf "  → source %s\n\n" "$shell_config"
 	}
 
 	init-dev-environment
-	init-project
-	pushd "$PROJECT_NAME"
-	init-project-files
-	init-project-repo
-	pixi task list
-	popd
 }
 __wrap__

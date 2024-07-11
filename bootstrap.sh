@@ -464,31 +464,21 @@ __wrap__() {
 			jax = { version = ">=0.4.28", extras = ["cpu"] }
 			genjax = "*"
 			genstudio = "*"
-			penzai = "*"
-			tensorflow-probability = "*"
-			msgpack = "*"
-
-			#[tool.pixi.feature.cpu.dependencies]
-			#jaxtyping = "*"
-			#beartype = "*"
-			#deprecated "*"
+			tensorflow-probability = ">=0.23.0"
+			penzai = ">=0.1.1"
+			msgpack = ">=1.0.8"
 
 			[tool.pixi.feature.cuda]
 			platforms = ["linux-64", "osx-arm64"]
 			system-requirements = { cuda = "12.4" }
 
-			#[tool.pixi.feature.cuda.target.linux-64.dependencies]
-			#jaxtyping = "*"
-			#beartype = "*"
-			#deprecated = "*"
-
 			[tool.pixi.feature.cuda.target.linux-64.pypi-dependencies]
 			jax = { version = ">=0.4.28", extras = ["cuda12"] }
 			genjax = "*"
 			genstudio = "*"
-			penzai = "*"
-			tensorflow-probability = "*"
-			msgpack = "*"
+			tensorflow-probability = ">=0.23.0"
+			penzai = ">=0.1.1"
+			msgpack = ">=1.0.8"
 		EOF
 	}
 
@@ -545,62 +535,21 @@ __wrap__() {
 
 		pushd "$PROJECT_NAME" &>/dev/null
 
-		# pypi
-		# pixi add --pypi \
-		# 	"genjax" \
-		# 	"genstudio" \
-		# 	"jax>=0.4.28" \
-		# 	tensorflow-probability \
-		# 	penzai \
-		# 	msgpack
-
 		# conda
 		pixi add \
-			jaxtyping \
-			beartype \
-			deprecated
-
-		# base feature
-		# pixi add --pypi \
-		# 	--feature base \
-		# 	genjax \
-		# 	genstudio \
-		# 	tensorflow-probability \
-		# 	penzai \
-		# 	msgpack \
-		# 	jaxtyping \
-		# 	beartype \
-		# 	deprecated
-
-		# cpu feature
-		# pixi add --pypi \
-		# 	--feature cpu \
-		# 	"jax[cpu]>=0.4.28"
-
-		# cpu feature
-		# pixi add --pypi \
-		# 	--feature cuda \
-		# 	"jax[cuda12]>=0.4.28"
+			"jaxtyping >=0.2.28" \
+			"beartype >=0.18.5" \
+			"deprecated >=1.2.14"
 
 		# dev feature
 		echo 'add dev'
 		pixi add \
 			--feature dev \
-			coverage \
-			nbmake \
-			pytest \
-			pytest-benchmark \
-			\
-			pyright \
-			xdoctest \
-			matplotlib \
-			mypy \
-			ruff \
-			safety \
-			seaborn \
-			jupyterlab \
-			jupytext \
-			quarto -vvv #"pytest-xdist[psutil]" \
+			"nbmake >=1.4.6" \
+			"pytest >=7.2.0" \
+			"ruff >=0.1.3" \
+			"jupyterlab >=4.1.6" \
+			"jupytext >=1.16.2"
 
 		pixi-hardcode >>pyproject.toml
 

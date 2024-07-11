@@ -582,14 +582,15 @@ __wrap__() {
 		# 	--feature cuda \
 		# 	"jax[cuda12]>=0.4.28"
 
-		# dev featur4e
+		# dev feature
+		echo 'add dev'
 		pixi add \
 			--feature dev \
 			coverage \
 			nbmake \
 			pytest \
 			pytest-benchmark \
-			pytest-xdist[psutil] \
+			\
 			pyright \
 			xdoctest \
 			matplotlib \
@@ -599,24 +600,26 @@ __wrap__() {
 			seaborn \
 			jupyterlab \
 			jupytext \
-			quarto
+			quarto -vvv #"pytest-xdist[psutil]" \
 
 		pixi-hardcode >>pyproject.toml
 
+		pixi install
+
 		# environments
-		pixi project environment add \
-			--solve-group default \
-			default
+		# pixi project environment add \
+		# 	--solve-group default \
+		# 	default
 
-		pixi project environment add \
-			--feature cpu \
-			--feature dev \
-			cpu
+		# pixi project environment add \
+		# 	--feature cpu \
+		# 	--feature dev \
+		# 	cpu
 
-		pixi project environment add \
-			--feature cuda \
-			--feature dev \
-			gpu
+		# pixi project environment add \
+		# 	--feature cuda \
+		# 	--feature dev \
+		# 	gpu
 
 		# tasks
 		pixi task add demo \
@@ -803,11 +806,11 @@ __wrap__() {
 		printf "  ✓ project files initialized\n\n"
 
 		# initialize project repo
-		echo "initializing project repo..."
-		if ! init-project-repo; then
-			echo "couldn't initialize project repo"
-			exit 1
-		fi
+		# echo "initializing project repo..."
+		# if ! init-project-repo; then
+		# 	echo "couldn't initialize project repo"
+		# 	exit 1
+		# fi
 		printf "  ✓ project repo initialized\n\n"
 
 		pixi task list

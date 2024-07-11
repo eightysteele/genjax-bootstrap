@@ -433,18 +433,18 @@ __wrap__() {
 
 		echo ".pixi/envs" >>.gitignore
 
-		pushd "src/$PROJECT_NAME"
+		pushd "src/$PROJECT_NAME" &>/dev/null
 		project-src-init >__init__.py
 		project-src-demo >demo.py
-		popd
+		popd &>/dev/null
 
-		pushd tests
+		pushd tests &>/dev/null
 		project-tests-test >test.py
-		popd
+		popd &>/dev/null
 
-		pushd notebooks
+		pushd notebooks &>/dev/null
 		project-notebook-demo >demo.ipynb
-		popd
+		popd &>/dev/null
 	}
 
 	pixi-hardcode() {
@@ -452,15 +452,43 @@ __wrap__() {
 			[tool.pixi.target.osx-arm64]
 			build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.26.4.*" } }
 
+			[tool.pixi.environments]
+			default = { solve-group = "default" }
+			cpu = ["cpu", "dev"]
+			cuda = ["cuda", "dev"]
+
 			[tool.pixi.feature.cpu]
 			platforms = ["linux-64", "osx-64", "osx-arm64"]
 
+			[tool.pixi.feature.cpu.pypi-dependencies]
+			jax = { version = ">=0.4.28", extras = ["cpu"] }
+			genjax = "*"
+			genstudio = "*"
+			penzai = "*"
+			tensorflow-probability = "*"
+			msgpack = "*"
+
+			#[tool.pixi.feature.cpu.dependencies]
+			#jaxtyping = "*"
+			#beartype = "*"
+			#deprecated "*"
+
 			[tool.pixi.feature.cuda]
-			platforms = ["linux-64"]
+			platforms = ["linux-64", "osx-arm64"]
 			system-requirements = { cuda = "12.4" }
 
-			[tool.pixi.feature.cuda.target.linux-64]
-			pypi-dependencies = { jax = { version = ">=0.4.28", extras = ["cuda12"] } }
+			#[tool.pixi.feature.cuda.target.linux-64.dependencies]
+			#jaxtyping = "*"
+			#beartype = "*"
+			#deprecated = "*"
+
+			[tool.pixi.feature.cuda.target.linux-64.pypi-dependencies]
+			jax = { version = ">=0.4.28", extras = ["cuda12"] }
+			genjax = "*"
+			genstudio = "*"
+			penzai = "*"
+			tensorflow-probability = "*"
+			msgpack = "*"
 		EOF
 	}
 
@@ -515,16 +543,16 @@ __wrap__() {
 			--platform win-64 \
 			"$PROJECT_NAME"
 
-		pushd "$PROJECT_NAME"
+		pushd "$PROJECT_NAME" &>/dev/null
 
 		# pypi
-		pixi add --pypi \
-			"genjax" \
-			"genstudio" \
-			"jax>=0.4.28" \
-			tensorflow-probability \
-			penzai \
-			msgpack
+		# pixi add --pypi \
+		# 	"genjax" \
+		# 	"genstudio" \
+		# 	"jax>=0.4.28" \
+		# 	tensorflow-probability \
+		# 	penzai \
+		# 	msgpack
 
 		# conda
 		pixi add \
@@ -533,29 +561,29 @@ __wrap__() {
 			deprecated
 
 		# base feature
-		pixi add --pypi \
-			--feature base \
-			genjax \
-			genstudio \
-			tensorflow-probability \
-			penzai \
-			msgpack \
-			jaxtyping \
-			beartype \
-			deprecated
+		# pixi add --pypi \
+		# 	--feature base \
+		# 	genjax \
+		# 	genstudio \
+		# 	tensorflow-probability \
+		# 	penzai \
+		# 	msgpack \
+		# 	jaxtyping \
+		# 	beartype \
+		# 	deprecated
 
 		# cpu feature
-		pixi add --pypi \
-			--feature cpu \
-			"jax[cpu]>=0.4.28"
+		# pixi add --pypi \
+		# 	--feature cpu \
+		# 	"jax[cpu]>=0.4.28"
 
 		# cpu feature
-		pixi add --pypi \
-			--feature cuda \
-			"jax[cuda12]>=0.4.28"
+		# pixi add --pypi \
+		# 	--feature cuda \
+		# 	"jax[cuda12]>=0.4.28"
 
 		# dev featur4e
-		pixi add --pypi \
+		pixi add \
 			--feature dev \
 			coverage \
 			nbmake \
@@ -573,6 +601,8 @@ __wrap__() {
 			jupytext \
 			quarto
 
+		pixi-hardcode >>pyproject.toml
+
 		# environments
 		pixi project environment add \
 			--solve-group default \
@@ -580,13 +610,11 @@ __wrap__() {
 
 		pixi project environment add \
 			--feature cpu \
-			--feature base \
 			--feature dev \
 			cpu
 
 		pixi project environment add \
 			--feature cuda \
-			--feature base \
 			--feature dev \
 			gpu
 
@@ -607,13 +635,11 @@ __wrap__() {
 			--feature dev \
 			--description "Run tests"
 
-		# hardcoded stuff
-		pixi-hardcode >>pyproject.toml
 		pixi-tools-hardcode >>pyproject.toml
 
-		pixi-update
+		pixi install
 
-		popd
+		popd &>/dev/null
 	}
 
 	prompt-user() {
@@ -766,7 +792,7 @@ __wrap__() {
 		fi
 		printf "  ✓ project initialized\n\n"
 
-		pushd "$PROJECT_NAME"
+		pushd "$PROJECT_NAME" &>/dev/null
 
 		# initialize project files
 		echo "initializing project files..."

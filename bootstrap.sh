@@ -435,7 +435,9 @@ __wrap__() {
 
 		pushd "src/$PROJECT_NAME" &>/dev/null
 		project-src-init >__init__.py
-		project-src-demo >demo.py
+		curl -fsSL \
+			https://raw.githubusercontent.com/eightysteele/genjax-bootstrap/main/demo.py \
+			>demo.py
 		popd &>/dev/null
 
 		pushd tests &>/dev/null
@@ -443,7 +445,9 @@ __wrap__() {
 		popd &>/dev/null
 
 		pushd notebooks &>/dev/null
-		project-notebook-demo >demo.ipynb
+		curl -fsSL \
+			https://raw.githubusercontent.com/eightysteele/genjax-bootstrap/main/demo.ipynb \
+			>demo.ipynb
 		popd &>/dev/null
 	}
 
@@ -575,17 +579,17 @@ __wrap__() {
 			python demo.py \
 			--feature dev \
 			--cwd "src/$PROJECT_NAME" \
-			--description "Run GenJax demo"
+			--description "run genjax demo"
 
 		pixi task add notebook \
 			"jupyter lab --ip=0.0.0.0 --allow-root notebooks" \
 			--feature dev \
-			--description "Run notebooks"
+			--description "run notebooks"
 
 		pixi task add test \
-			"pytest --benchmark-disable --ignore scratch --ignore notebooks -n auto" \
+			"pytest --benchmark-disable --ignore scratch --ignore notebooks/demo.ipynb -n auto" \
 			--feature dev \
-			--description "Run tests"
+			--description "run tests"
 
 		pixi-tools-hardcode >>pyproject.toml
 
@@ -764,8 +768,10 @@ __wrap__() {
 
 		pixi task list
 
-		printf "\nbootstrap complete! run this command and you're done:\n"
-		printf "  → source %s\n\n" "$shell_config"
+		printf "\nbootstrap complete! run these commands:\n"
+		printf "  → source %s\n" "$shell_config"
+		printf "  → cd %s\n" "$PROJECT_NAME"
+		printf "  → pixi run notebook\n\n"
 	}
 
 	init-dev-environment

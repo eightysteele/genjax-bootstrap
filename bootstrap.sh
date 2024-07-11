@@ -582,12 +582,12 @@ __wrap__() {
 			--description "run genjax demo"
 
 		pixi task add notebook \
-			"jupyter lab --ip=0.0.0.0 --allow-root notebooks" \
+			"jupyter lab --ip=0.0.0.0 --allow-root notebooks/demo.ipynb" \
 			--feature dev \
 			--description "run notebooks"
 
 		pixi task add test \
-			"pytest --benchmark-disable --ignore scratch --ignore notebooks/demo.ipynb -n auto" \
+			"pytest --benchmark-disable --ignore scratch --ignore notebooks -n auto" \
 			--feature dev \
 			--description "run tests"
 

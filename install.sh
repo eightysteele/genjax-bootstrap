@@ -291,10 +291,14 @@ __wrap__() {
 		rename-project
 		pixi install --frozen
 
+		echo "pixi tasks available on this machine..."
+		echo "  pixi task list"
+		pixi task list
+
 		printf "\nbootstrap complete! run these commands:\n"
 		printf "  → source %s\n" "$shell_config"
 		printf "  → cd %s\n" "$PROJECT_NAME"
-		printf "  → pixi run notebook\n\n"
+		printf "  → pixi run auth-check\n\n"
 	}
 
 	init-dev-environment

@@ -5,8 +5,8 @@ description = "Add a short description here"
 authors = [{ name = "You", email = "you@frochi.com" }]
 requires-python = ">= 3.11"
 dependencies = [
-    "genjax",
-    "genstudio",
+    #"genjax",
+    #"genstudio",
     #"tensorflow-probability >=0.23.0",
     #"penzai >=0.1.1",
     #"msgpack >=1.0.8",
@@ -68,6 +68,10 @@ jupyterlab = ">=4.1.6"
 jupytext = ">=1.16.2"
 pixi-kernel = ">=0.3.0,<0.4"
 
+[tool.pixi.feature.gen.pypi-dependencies]
+genjax = "*"
+genstudio = "*"
+
 [tool.pixi.target.unix.dependencies]
 jax = ">=0.4.28"
 jaxlib = ">=0.4.28"
@@ -101,8 +105,8 @@ build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.
 [tool.pixi.environments]
 cuda = {features = ["cuda"], solve-group = "cuda"}
 #mypy = {features = ["mypy"], solve-group = "default"}
-cpu = {features = ["test", "dev"], solve-group = "default"}
-gpu = {features = ["test", "cuda", "dev"], solve-group = "cuda"}
+cpu = {features = ["test", "dev", "gen"], solve-group = "default"}
+gpu = {features = ["test", "cuda", "dev", "gen"], solve-group = "cuda"}
 
 # [tool.pixi.feature.cpu]
 # platforms = ["linux-64", "osx-64", "osx-arm64"]

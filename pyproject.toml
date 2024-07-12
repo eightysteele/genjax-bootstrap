@@ -39,10 +39,6 @@ pixi-kernel = ">=0.3.0,<0.4"
 jax = ">=0.4.28"
 jaxlib = ">=0.4.28"
 
-#[tool.pixi.target.linux-64.pypi-dependencies]
-#jax = ">=0.4.28"
-#jaxlib = { version = ">=0.4.28", extras = ["cpu"] }
-
 [tool.pixi.target.win-64.pypi-dependencies]
 jax = { version = ">=0.4.28", extras = ["cpu"] }
 jaxlib = ">=0.4.28"
@@ -51,14 +47,8 @@ jaxlib = ">=0.4.28"
 build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.26.4.*" } }
 
 [tool.pixi.tasks]
+auth-check = { cmd ="check-auth.sh", cwd = "scripts", description = "checks google artifact registry authentication" }
 gh-create-repo = { cmd = "gh-repo-create.sh", cwd = "scripts", description = "turns the project into a new github repo" }
-
-# ------------------------------------------------------------------------------
-# gen feature
-
-#[tool.pixi.feature.gen.pypi-dependencies]
-#genjax = "*"
-#genstudio = "*"
 
 # ------------------------------------------------------------------------------
 # dev feature

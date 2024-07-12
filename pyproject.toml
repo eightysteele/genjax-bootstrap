@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add a short description here"
 authors = [{ name = "You", email = "you@frochi.com" }]
 requires-python = ">= 3.11"
-dependencies = []
+dependencies = ["genjax", "genstudio"]
 
 [build-system]
 requires = ["setuptools"]
@@ -57,9 +57,9 @@ gh-create-repo = { cmd = "gh-repo-create.sh", cwd = "scripts", description = "tu
 # ------------------------------------------------------------------------------
 # gen feature
 
-[tool.pixi.feature.gen.pypi-dependencies]
-genjax = "*"
-genstudio = "*"
+#[tool.pixi.feature.gen.pypi-dependencies]
+#genjax = "*"
+#genstudio = "*"
 
 # ------------------------------------------------------------------------------
 # dev feature
@@ -93,8 +93,8 @@ test = { cmd = "pytest --ignore notebooks tests", description = "run tests" }
 
 [tool.pixi.environments]
 cuda = {features = ["cuda"], solve-group = "cuda"}
-cpu = {features = ["test", "dev", "gen"], solve-group = "default"}
-gpu = {features = ["test", "cuda", "dev", "gen"], solve-group = "cuda"}
+cpu = {features = ["test", "dev"], solve-group = "default"}
+gpu = {features = ["test", "cuda", "dev"], solve-group = "cuda"}
 
 # ------------------------------------------------------------------------------
 # tool configurations

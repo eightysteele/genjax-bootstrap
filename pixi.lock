@@ -3262,8 +3262,8 @@ packages:
 - kind: pypi
   name: dm-tree
   version: 0.1.8
-  url: https://files.pythonhosted.org/packages/ad/e3/96f5267fe5a47c882dce7f3d06b26ddd756681fc4fbedd55d51b78b08bca/dm_tree-0.1.8-cp312-cp312-win_amd64.whl
-  sha256: 96a548a406a6fb15fe58f6a30a57ff2f2aafbf25f05afab00c8f5e5977b6c715
+  url: https://files.pythonhosted.org/packages/10/10/5f9eed00b1186921e447960443f03cda6374cba8cd5cf7aff2b42ecb8a0e/dm_tree-0.1.8-cp312-cp312-macosx_11_0_arm64.whl
+  sha256: 435227cf3c5dc63f4de054cf3d00183790bd9ead4c3623138c74dde7f67f521b
 - kind: pypi
   name: dm-tree
   version: 0.1.8
@@ -3277,8 +3277,8 @@ packages:
 - kind: pypi
   name: dm-tree
   version: 0.1.8
-  url: https://files.pythonhosted.org/packages/10/10/5f9eed00b1186921e447960443f03cda6374cba8cd5cf7aff2b42ecb8a0e/dm_tree-0.1.8-cp312-cp312-macosx_11_0_arm64.whl
-  sha256: 435227cf3c5dc63f4de054cf3d00183790bd9ead4c3623138c74dde7f67f521b
+  url: https://files.pythonhosted.org/packages/ad/e3/96f5267fe5a47c882dce7f3d06b26ddd756681fc4fbedd55d51b78b08bca/dm_tree-0.1.8-cp312-cp312-win_amd64.whl
+  sha256: 96a548a406a6fb15fe58f6a30a57ff2f2aafbf25f05afab00c8f5e5977b6c715
 - kind: conda
   name: entrypoints
   version: '0.4'
@@ -3362,7 +3362,7 @@ packages:
   name: frochi
   version: 0.1.0
   path: .
-  sha256: 888968b9953ea97f8bbeace8109e4d918a28b538c98a7e448dbc29c3b67ec244
+  sha256: fe8cccb7b37ac3fda0894c309de811a8ad77d3825ae713f5a8fd2f62b13f35cb
   requires_python: '>=3.11'
   editable: true
 - kind: pypi
@@ -9012,8 +9012,8 @@ packages:
 - kind: pypi
   name: wrapt
   version: 1.16.0
-  url: https://files.pythonhosted.org/packages/5c/cc/8297f9658506b224aa4bd71906447dea6bb0ba629861a758c28f67428b91/wrapt-1.16.0-cp312-cp312-win_amd64.whl
-  sha256: dcdba5c86e368442528f7060039eda390cc4091bfd1dca41e8046af7c910dda8
+  url: https://files.pythonhosted.org/packages/6a/d7/cfcd73e8f4858079ac59d9db1ec5a1349bc486ae8e9ba55698cc1f4a1dff/wrapt-1.16.0-cp312-cp312-macosx_11_0_arm64.whl
+  sha256: 9090c9e676d5236a6948330e83cb89969f433b1943a558968f659ead07cb3b36
   requires_python: '>=3.6'
 - kind: pypi
   name: wrapt
@@ -9030,8 +9030,8 @@ packages:
 - kind: pypi
   name: wrapt
   version: 1.16.0
-  url: https://files.pythonhosted.org/packages/6a/d7/cfcd73e8f4858079ac59d9db1ec5a1349bc486ae8e9ba55698cc1f4a1dff/wrapt-1.16.0-cp312-cp312-macosx_11_0_arm64.whl
-  sha256: 9090c9e676d5236a6948330e83cb89969f433b1943a558968f659ead07cb3b36
+  url: https://files.pythonhosted.org/packages/5c/cc/8297f9658506b224aa4bd71906447dea6bb0ba629861a758c28f67428b91/wrapt-1.16.0-cp312-cp312-win_amd64.whl
+  sha256: dcdba5c86e368442528f7060039eda390cc4091bfd1dca41e8046af7c910dda8
   requires_python: '>=3.6'
 - kind: conda
   name: xz

@@ -288,7 +288,7 @@ __wrap__() {
 
 		pushd "$PROJECT_NAME" &>/dev/null
 		#rm -rf .git
-		rename-project
+		#rename-project
 
 		#echo "running 'pixi install --frozen'..."
 		#pixi install --frozen

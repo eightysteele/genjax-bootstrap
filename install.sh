@@ -290,8 +290,6 @@ __wrap__() {
 		rm -rf .git
 		rename-project
 		pixi install --frozen
-		pixi install --frozen -e cpu
-		pixi install --frozen -e cuda
 
 		printf "\nbootstrap complete! run these commands:\n"
 		printf "  → source %s\n" "$shell_config"

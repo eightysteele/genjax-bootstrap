@@ -58,6 +58,7 @@ frochi = { path = ".", editable = true }
 auth-check = { cmd = "check-auth.sh", cwd = "scripts", description = "ensures that you're authenticated to google artifact registry" }
 gh-create-repo = { cmd = "gh-repo-create.sh", cwd = "scripts", description = "turns the project into a new github repo" }
 
+
 [tool.pixi.dependencies]
 python = "3.12"
 nbmake = ">=1.4.6"
@@ -68,20 +69,29 @@ jupytext = ">=1.16.2"
 pixi-kernel = ">=0.3.0,<0.4"
 
 [tool.pixi.target.unix.dependencies]
-jax = ">=0.4.20"
-jaxlib = ">=0.4.20"
+jax = ">=0.4.28"
+jaxlib = ">=0.4.28"
+
+[tool.pixi.target.linux-64.pypi-dependencies]
+jax = ">=0.4.28"
+jaxlib = { version = ">=0.4.28", extras = ["cpu"] }
+
+#jax = ">=0.4.28"
+#jax = { version = ">=0.4.28", extras = ["cpu"] }
+#jaxlib = ">=0.4.28"
 
 [tool.pixi.target.win-64.pypi-dependencies]
-jax = { version = ">=0.4.20", extras = ["cpu"] }
-jaxlib = ">=0.4.20"
+jax = { version = ">=0.4.28", extras = ["cpu"] }
+jaxlib = ">=0.4.28"
 
-# [tool.pixi.feature.dev.tasks]
-# demo = { cmd = "python demo.py", cwd = "src/frochi", description = "runs the genjax demo" }
-# notebook = { cmd = "jupyter lab --ip=0.0.0.0 --allow-root notebooks/demo.ipynb", description = "runs jupyter labs in a browser" }
+[tool.pixi.feature.dev.tasks]
+ demo = { cmd = "python demo.py", cwd = "src/frochi", description = "runs the genjax demo" }
+ notebook = { cmd = "jupyter lab --ip=0.0.0.0 --allow-root notebooks/demo.ipynb", description = "runs jupyter labs in a browser" }
 
 
-[tool.pixi.target.unix]
+[tool.pixi.target.osx-arm64]
 build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.26.4.*" } }
+#build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = ">=1.26.4.*,<2.0.0" } }
 
 # [tool.pixi.environments]
 # default = { solve-group = "default" }
@@ -91,8 +101,8 @@ build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.
 [tool.pixi.environments]
 cuda = {features = ["cuda"], solve-group = "cuda"}
 #mypy = {features = ["mypy"], solve-group = "default"}
-test-cpu = {features = ["test"], solve-group = "default"}
-test-gpu = {features = ["test", "cuda"], solve-group = "cuda"}
+cpu = {features = ["test", "dev"], solve-group = "default"}
+gpu = {features = ["test", "cuda", "dev"], solve-group = "cuda"}
 
 # [tool.pixi.feature.cpu]
 # platforms = ["linux-64", "osx-64", "osx-arm64"]
@@ -110,9 +120,10 @@ platforms = ["linux-64"]
 system-requirements = { cuda = "12" }
 
 [tool.pixi.feature.cuda.target.linux-64.dependencies]
-cuda-nvcc = ">=12"
-jax = ">=0.4.20"
-jaxlib = { version = ">=0.4.20", build = "cuda12*" }
+#cuda-nvcc = ">=12"
+jax = ">=0.4.28"
+jaxlib = { version = ">=0.4.28", build = "cuda12*" }
+#jax = { version = ">=0.4.28", extras = ["cuda12"] }
 
 # [tool.pixi.feature.cuda.target.linux-64.pypi-dependencies]
 # jax = { version = ">=0.4.28", extras = ["cuda12"] }

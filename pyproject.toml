@@ -39,9 +39,9 @@ pixi-kernel = ">=0.3.0,<0.4"
 jax = ">=0.4.28"
 jaxlib = ">=0.4.28"
 
-[tool.pixi.target.linux-64.pypi-dependencies]
-jax = ">=0.4.28"
-jaxlib = { version = ">=0.4.28", extras = ["cpu"] }
+#[tool.pixi.target.linux-64.pypi-dependencies]
+#jax = ">=0.4.28"
+#jaxlib = { version = ">=0.4.28", extras = ["cpu"] }
 
 [tool.pixi.target.win-64.pypi-dependencies]
 jax = { version = ">=0.4.28", extras = ["cpu"] }

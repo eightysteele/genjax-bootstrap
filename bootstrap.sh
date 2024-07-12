@@ -207,189 +207,6 @@ __wrap__() {
 		EOF
 	}
 
-	project-notebook-demo() {
-		cat <<-EOF
-			{
-			 "cells": [
-			  {
-			   "cell_type": "code",
-			   "execution_count": null,
-			   "id": "ebbdee30-9a85-4ea9-abb2-be64e7a83bb1",
-			   "metadata": {},
-			   "outputs": [],
-			   "source": [
-			    "import timeit\n",
-			    "\n",
-			    "import jax\n",
-			    "import jax.numpy as jnp\n",
-			    "import genjax\n",
-			    "from genjax import beta, flip, gen, Target, ChoiceMap\n",
-			    "from genjax.inference.smc import ImportanceK\n",
-			    "\n",
-			    "@gen\n",
-			    "def beta_bernoulli(α, β):\n",
-			    "    \"\"\"Define the generative model.\"\"\"\n",
-			    "    p = beta(α, β) @ 'p'\n",
-			    "    v = flip(p) @ \"v\"\n",
-			    "    return v\n",
-			    "\n",
-			    "def run_inference(obs: bool, platform='cpu'):\n",
-			    "    \"\"\"Estimate $(p) over 50 independent trials of SIR (K = 50 particles).\"\"\"\n",
-			    "    # Set the device\n",
-			    "    device = jax.devices(platform)[0]\n",
-			    "    key = jax.random.PRNGKey(314159)\n",
-			    "    key = jax.device_put(key, device)\n",
-			    "\n",
-			    "    # JIT compilation will be target-specific based on device (CPU or GPU)\n",
-			    "    @jax.jit\n",
-			    "    def execute_inference():\n",
-			    "        # Inference query with the a model, arguments, and constraints\n",
-			    "        posterior = Target(beta_bernoulli, (2.0, 2.0), ChoiceMap.d({\"v\": obs}))\n",
-			    "\n",
-			    "        # Use a library algorithm, or design your own—more on that in the docs!\n",
-			    "        alg = ImportanceK(posterior, k_particles=50)\n",
-			    "\n",
-			    "        # Everything is JAX compatible by default—jit, vmap, etc.\n",
-			    "        skeys = jax.random.split(key, 50)\n",
-			    "        _, p_chm = jax.vmap(\n",
-			    "            alg.random_weighted, in_axes=(0, None))(skeys, posterior)\n",
-			    "\n",
-			    "        return jnp.mean(p_chm['p'])\n",
-			    "\n",
-			    "    return execute_inference\n",
-			    "\n",
-			    "\n",
-			    "n = 1000\n",
-			    "print(f\"\Starting GenJax demo with {n} runs...\")\n",
-			    "\n",
-			    "# CPU compile, execute, benchmark, profile\n",
-			    "cpu_jit = jax.jit(run_inference(True, 'cpu'))\n",
-			    "cpu_jit().block_until_ready()\n",
-			    "ms = timeit.timeit(\n",
-			    "    'cpu_jit()',\n",
-			    "    globals=globals(),\n",
-			    "    number=n\n",
-			    ") / n * 1000\n",
-			    "print(f\"CPU: Average runtime over {n} runs = {ms} (ms)\")\n",
-			    "\n",
-			    "# GPU compile, execute, benchmark, profile\n",
-			    "gpu_jit = jax.jit(run_inference(True, 'cpu'))\n",
-			    "gpu_jit().block_until_ready()\n",
-			    "try:\n",
-			    "    jax.devices('gpu')\n",
-			    "    ms = timeit.timeit(\n",
-			    "        'gpu_jit',\n",
-			    "        globals=globals(),\n",
-			    "        number=n\n",
-			    "    ) / n * 1000\n",
-			    "    print(f\"GPU: Average runtime over {n} runs = {ms} (ms)\")\n",
-			    "except RuntimeError as e:\n",
-			    "    print(\"(No GPU device on host)\")\n",
-			    "\n",
-			    "print(\"Done!\")"
-			   ]
-			  }
-			 ],
-			 "metadata": {
-			  "kernelspec": {
-			   "display_name": "Python 3 (ipykernel)",
-			   "language": "python",
-			   "name": "python3"
-			  },
-			  "language_info": {
-			   "codemirror_mode": {
-			    "name": "ipython",
-			    "version": 3
-			   },
-			   "file_extension": ".py",
-			   "mimetype": "text/x-python",
-			   "name": "python",
-			   "nbconvert_exporter": "python",
-			   "pygments_lexer": "ipython3",
-			   "version": "3.12.4"
-			  }
-			 },
-			 "nbformat": 4,
-			 "nbformat_minor": 5
-			}
-		EOF
-	}
-
-	project-src-demo() {
-		cat <<-EOF
-			import timeit
-
-			import jax
-			import jax.numpy as jnp
-			import genjax
-			from genjax import beta, flip, gen, Target, ChoiceMap
-			from genjax.inference.smc import ImportanceK
-
-			@gen
-			def beta_bernoulli(α, β):
-			    """Define the generative model."""
-			    p = beta(α, β) @ "p"
-			    v = flip(p) @ "v"
-			    return v
-
-			def run_inference(obs: bool, platform='cpu'):
-			    """Estimate $(p) over 50 independent trials of SIR (K = 50 particles)."""
-			    # Set the device
-			    device = jax.devices(platform)[0]
-			    key = jax.random.PRNGKey(314159)
-			    key = jax.device_put(key, device)
-
-			    # JIT compilation will be target-specific based on device (CPU or GPU)
-			    @jax.jit
-			    def execute_inference():
-			        # Inference query with the a model, arguments, and constraints
-			        posterior = Target(beta_bernoulli, (2.0, 2.0), ChoiceMap.d({"v": obs}))
-
-			        # Use a library algorithm, or design your own—more on that in the docs!
-			        alg = ImportanceK(posterior, k_particles=50)
-
-			        # Everything is JAX compatible by default—jit, vmap, etc.
-			        skeys = jax.random.split(key, 50)
-			        _, p_chm = jax.vmap(
-			            alg.random_weighted, in_axes=(0, None))(skeys, posterior)
-
-			        return jnp.mean(p_chm['p'])
-
-			    return execute_inference
-
-
-			n = 1000
-			print(f"\nStarting GenJax demo with {n} runs...")
-
-			# CPU compile, execute, benchmark, profile
-			cpu_jit = jax.jit(run_inference(True, 'cpu'))
-			cpu_jit().block_until_ready()
-			ms = timeit.timeit(
-			    'cpu_jit()',
-			    globals=globals(),
-			    number=n
-			) / n * 1000
-			print(f"CPU: Average runtime over {n} runs = {ms} (ms)")
-
-			# GPU compile, execute, benchmark, profile
-			gpu_jit = jax.jit(run_inference(True, 'cpu'))
-			gpu_jit().block_until_ready()
-			try:
-			    jax.devices('gpu')
-			    ms = timeit.timeit(
-			        'gpu_jit',
-			        globals=globals(),
-			        number=n
-			    ) / n * 1000
-			    print(f"GPU: Average runtime over {n} runs = {ms} (ms)")
-			except RuntimeError as e:
-			    print("(No GPU device on host)")
-
-			print("Done!")
-
-		EOF
-	}
-
 	project-tests-test() {
 		cat <<-EOF
 			from $PROJECT_NAME import hello
@@ -432,6 +249,15 @@ __wrap__() {
 		fi
 
 		echo ".pixi/envs" >>.gitignore
+		project-pixi-config >>.pixi/config.toml
+
+		curl -fsSL \
+			https://raw.githubusercontent.com/eightysteele/genjax-bootstrap/main/pyproject.toml \
+			>pyproject.toml
+
+		curl -fsSL \
+			https://raw.githubusercontent.com/eightysteele/genjax-bootstrap/main/pixi.lock \
+			>pixi.lock
 
 		pushd "src/$PROJECT_NAME" &>/dev/null
 		project-src-init >__init__.py
@@ -449,60 +275,6 @@ __wrap__() {
 			https://raw.githubusercontent.com/eightysteele/genjax-bootstrap/main/demo.ipynb \
 			>demo.ipynb
 		popd &>/dev/null
-	}
-
-	pixi-hardcode() {
-		cat <<-EOF
-			[tool.pixi.target.osx-arm64]
-			build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.26.4.*" } }
-
-			[tool.pixi.environments]
-			default = { solve-group = "default" }
-			cpu = ["cpu", "dev"]
-			cuda = ["cuda", "dev"]
-
-			[tool.pixi.feature.cpu]
-			platforms = ["linux-64", "osx-64", "osx-arm64"]
-
-			[tool.pixi.feature.cpu.pypi-dependencies]
-			jax = { version = ">=0.4.28", extras = ["cpu"] }
-			genjax = "*"
-			genstudio = "*"
-			tensorflow-probability = ">=0.23.0"
-			penzai = ">=0.1.1"
-			msgpack = ">=1.0.8"
-
-			[tool.pixi.feature.cuda]
-			platforms = ["linux-64", "osx-arm64"]
-			system-requirements = { cuda = "12.4" }
-
-			[tool.pixi.feature.cuda.target.linux-64.pypi-dependencies]
-			jax = { version = ">=0.4.28", extras = ["cuda12"] }
-			genjax = "*"
-			genstudio = "*"
-			tensorflow-probability = ">=0.23.0"
-			penzai = ">=0.1.1"
-			msgpack = ">=1.0.8"
-		EOF
-	}
-
-	pixi-tools-hardcode() {
-		cat <<-EOF
-			[tool.pyright]
-			venvPath = "."
-			venv = ".pixi"
-			pythonVersion = "3.12.3"
-			include = ["src", "notebooks"]
-
-			[tool.ruff.format]
-			exclude = ["notebooks/demo.py"]
-
-			[tool.ruff.lint.per-file-ignores]
-			"notebooks/intro.py" = ["E999"]
-
-			[tool.jupytext]
-			formats = "ipynb,py:percent"
-		EOF
 	}
 
 	init-project() {
@@ -598,35 +370,7 @@ __wrap__() {
 		popd &>/dev/null
 	}
 
-	prompt-user() {
-		local os=$(uname -s)
-		local arch=$(uname -m)
-
-		printf "This script will bootstrap a new project into a virtual GenJax development environment for %s %s.\n\n" $os $arch
-
-		read -p "Do you want to continue? (y/n): " choice
-
-		case "$choice" in
-		y | Y)
-			echo "Bootstrapping..."
-			return 0
-			;;
-		n | N)
-			echo "Aborting."
-			return 1
-			;;
-		*)
-			echo "Invalid input. Please enter 'y' to continue or 'n' to abort."
-			exit 1
-			;;
-		esac
-	}
-
 	init-dev-environment() {
-		if ! prompt-user; then
-			exit 1
-		fi
-
 		local shell=""
 		local shell_config=""
 		local v=""

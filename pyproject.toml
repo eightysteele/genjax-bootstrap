@@ -37,8 +37,8 @@ jupyterlab = ">=4.1.6"
 jupytext = ">=1.16.2"
 
 [tool.pixi.feature.dev.tasks]
-demo = { cmd = "python demo.py", cwd = "src/frochi", description = "run genjax demo" }
-notebook = { cmd = "jupyter lab --ip=0.0.0.0 --allow-root notebooks/demo.ipynb", description = "run notebooks" }
+demo = { cmd = "python demo.py", cwd = "src/frochi", description = "runs the genjax demo" }
+notebook = { cmd = "jupyter lab --ip=0.0.0.0 --allow-root notebooks/demo.ipynb", description = "runs jupyter labs in a browser" }
 test = { cmd = "pytest --ignore notebooks tests", description = "run tests" }
 
 [tool.pixi.target.osx-arm64]

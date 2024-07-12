@@ -92,7 +92,7 @@ gcloud-init() {
 }
 
 gcloud-auth-adc() {
-	if ! gcloud auth application-default login; then
+	if ! gcloud auth application-default print-access-token; then
 		return 1
 	fi
 	return 0
@@ -152,6 +152,7 @@ main() {
 	p=$(which gcloud)
 	printf "  ✓ gcloud %s installed (%s)\n\n" "$v" "$p"
 
+	# check gcloud auty
 	echo "checking gcloud auth..."
 	if ! gcloud-authenticated; then
 		echo "authenticating gcloud..."

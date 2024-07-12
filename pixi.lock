@@ -1768,13 +1768,13 @@ packages:
 - kind: pypi
   name: dm-tree
   version: 0.1.8
-  url: https://files.pythonhosted.org/packages/10/10/5f9eed00b1186921e447960443f03cda6374cba8cd5cf7aff2b42ecb8a0e/dm_tree-0.1.8-cp312-cp312-macosx_11_0_arm64.whl
-  sha256: 435227cf3c5dc63f4de054cf3d00183790bd9ead4c3623138c74dde7f67f521b
+  url: https://files.pythonhosted.org/packages/c9/d4/8cbb857612ca69763ee4f4f97c7b91659df1d373d62237cb9c772e55ae97/dm_tree-0.1.8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  sha256: c0a94aba18a35457a1b5cd716fd7b46c5dafdc4cf7869b4bae665b91c4682a8e
 - kind: pypi
   name: dm-tree
   version: 0.1.8
-  url: https://files.pythonhosted.org/packages/c9/d4/8cbb857612ca69763ee4f4f97c7b91659df1d373d62237cb9c772e55ae97/dm_tree-0.1.8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-  sha256: c0a94aba18a35457a1b5cd716fd7b46c5dafdc4cf7869b4bae665b91c4682a8e
+  url: https://files.pythonhosted.org/packages/10/10/5f9eed00b1186921e447960443f03cda6374cba8cd5cf7aff2b42ecb8a0e/dm_tree-0.1.8-cp312-cp312-macosx_11_0_arm64.whl
+  sha256: 435227cf3c5dc63f4de054cf3d00183790bd9ead4c3623138c74dde7f67f521b
 - kind: pypi
   name: dm-tree
   version: 0.1.8
@@ -1863,7 +1863,7 @@ packages:
   name: frochi
   version: 0.1.0
   path: .
-  sha256: 2977b9905f48af88e27bca11242baf8d9532713b5824588f64a6382d550a0be0
+  sha256: bead2ddf7da00e9a926b4ceeaa63f5aa9ddac90ff3649cbdf3ce77cb11ebf583
   requires_python: '>=3.11'
   editable: true
 - kind: pypi
@@ -2284,8 +2284,8 @@ packages:
 - kind: pypi
   name: jaxlib
   version: 0.4.30
-  url: https://files.pythonhosted.org/packages/c6/e3/97f8edff6f64245a500415be021869522b235e8b38cd930d358b91243583/jaxlib-0.4.30-cp312-cp312-macosx_11_0_arm64.whl
-  sha256: 57090d33477fd0f0c99dc686274882ea75c44c7d712ae42dd2460b10f896131d
+  url: https://files.pythonhosted.org/packages/f2/fa/a2dddea0d6965b8e433bb99aeedbe5c8a9b47110c1c4f197a7b6239daf44/jaxlib-0.4.30-cp312-cp312-manylinux2014_x86_64.whl
+  sha256: c58a8071c4e00898282118169f6a5a97eb15a79c2897858f3a732b17891c99ab
   requires_dist:
   - scipy>=1.9
   - numpy>=1.22
@@ -2295,8 +2295,8 @@ packages:
 - kind: pypi
   name: jaxlib
   version: 0.4.30
-  url: https://files.pythonhosted.org/packages/f2/fa/a2dddea0d6965b8e433bb99aeedbe5c8a9b47110c1c4f197a7b6239daf44/jaxlib-0.4.30-cp312-cp312-manylinux2014_x86_64.whl
-  sha256: c58a8071c4e00898282118169f6a5a97eb15a79c2897858f3a732b17891c99ab
+  url: https://files.pythonhosted.org/packages/c6/e3/97f8edff6f64245a500415be021869522b235e8b38cd930d358b91243583/jaxlib-0.4.30-cp312-cp312-macosx_11_0_arm64.whl
+  sha256: 57090d33477fd0f0c99dc686274882ea75c44c7d712ae42dd2460b10f896131d
   requires_dist:
   - scipy>=1.9
   - numpy>=1.22
@@ -3634,22 +3634,6 @@ packages:
 - kind: pypi
   name: ml-dtypes
   version: 0.4.0
-  url: https://files.pythonhosted.org/packages/30/9d/890e8c9cb556cec121f784fd84089e1e52939ba6eabf5dc62f6435db28d6/ml_dtypes-0.4.0-cp312-cp312-macosx_10_9_universal2.whl
-  sha256: ee9f91d4c4f9959a7e1051c141dc565f39e54435618152219769e24f5e9a4d06
-  requires_dist:
-  - numpy>1.20
-  - numpy>=1.21.2 ; python_version >= '3.10'
-  - numpy>=1.23.3 ; python_version >= '3.11'
-  - numpy>=1.26.0 ; python_version >= '3.12'
-  - absl-py ; extra == 'dev'
-  - pytest ; extra == 'dev'
-  - pytest-xdist ; extra == 'dev'
-  - pylint>=2.6.0 ; extra == 'dev'
-  - pyink ; extra == 'dev'
-  requires_python: '>=3.9'
-- kind: pypi
-  name: ml-dtypes
-  version: 0.4.0
   url: https://files.pythonhosted.org/packages/8c/ef/5635b60d444db9c949b32d4e1a0a30b3ac237afbd71cce8bd1ccfb145723/ml_dtypes-0.4.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   sha256: eaa32979ebfde3a0d7c947cafbf79edc1ec77ac05ad0780ee86c1d8df70f2259
   requires_dist:
@@ -3664,16 +3648,32 @@ packages:
   - pyink ; extra == 'dev'
   requires_python: '>=3.9'
 - kind: pypi
-  name: msgpack
-  version: 1.0.8
-  url: https://files.pythonhosted.org/packages/99/3e/49d430df1e9abf06bb91e9824422cd6ceead2114662417286da3ddcdd295/msgpack-1.0.8-cp312-cp312-macosx_11_0_arm64.whl
-  sha256: d56fd9f1f1cdc8227d7b7918f55091349741904d9520c65f0139a9755952c9e8
-  requires_python: '>=3.8'
+  name: ml-dtypes
+  version: 0.4.0
+  url: https://files.pythonhosted.org/packages/30/9d/890e8c9cb556cec121f784fd84089e1e52939ba6eabf5dc62f6435db28d6/ml_dtypes-0.4.0-cp312-cp312-macosx_10_9_universal2.whl
+  sha256: ee9f91d4c4f9959a7e1051c141dc565f39e54435618152219769e24f5e9a4d06
+  requires_dist:
+  - numpy>1.20
+  - numpy>=1.21.2 ; python_version >= '3.10'
+  - numpy>=1.23.3 ; python_version >= '3.11'
+  - numpy>=1.26.0 ; python_version >= '3.12'
+  - absl-py ; extra == 'dev'
+  - pytest ; extra == 'dev'
+  - pytest-xdist ; extra == 'dev'
+  - pylint>=2.6.0 ; extra == 'dev'
+  - pyink ; extra == 'dev'
+  requires_python: '>=3.9'
 - kind: pypi
   name: msgpack
   version: 1.0.8
   url: https://files.pythonhosted.org/packages/04/2a/c833a8503be9030083f0469e7a3c74d3622a3b4eae676c3934d3ccc01036/msgpack-1.0.8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   sha256: 8db8e423192303ed77cff4dce3a4b88dbfaf43979d280181558af5e2c3c71afc
+  requires_python: '>=3.8'
+- kind: pypi
+  name: msgpack
+  version: 1.0.8
+  url: https://files.pythonhosted.org/packages/99/3e/49d430df1e9abf06bb91e9824422cd6ceead2114662417286da3ddcdd295/msgpack-1.0.8-cp312-cp312-macosx_11_0_arm64.whl
+  sha256: d56fd9f1f1cdc8227d7b7918f55091349741904d9520c65f0139a9755952c9e8
   requires_python: '>=3.8'
 - kind: pypi
   name: msgpack
@@ -4356,8 +4356,8 @@ packages:
 - kind: pypi
   name: psygnal
   version: 0.11.1
-  url: https://files.pythonhosted.org/packages/68/76/d5c5bf5a932ec2dcdc4a23565815a1cc5fd96b03b26ff3f647cdff5ea62c/psygnal-0.11.1-py3-none-any.whl
-  sha256: 04255fe28828060a80320f8fda937c47bc0c21ca14f55a13eb7c494b165ea395
+  url: https://files.pythonhosted.org/packages/49/ad/8ee3f8ac1d59cf269ae2d55f7cac7c65fe3b3f41cada5d6a17bc2f4c5d6d/psygnal-0.11.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  sha256: 885922a6e65ece9ff8ccf2b6810f435ca8067f410889f7a8fffb6b0d61421a0d
   requires_dist:
   - ipython ; extra == 'dev'
   - mypy ; extra == 'dev'
@@ -4393,8 +4393,8 @@ packages:
 - kind: pypi
   name: psygnal
   version: 0.11.1
-  url: https://files.pythonhosted.org/packages/49/ad/8ee3f8ac1d59cf269ae2d55f7cac7c65fe3b3f41cada5d6a17bc2f4c5d6d/psygnal-0.11.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-  sha256: 885922a6e65ece9ff8ccf2b6810f435ca8067f410889f7a8fffb6b0d61421a0d
+  url: https://files.pythonhosted.org/packages/68/76/d5c5bf5a932ec2dcdc4a23565815a1cc5fd96b03b26ff3f647cdff5ea62c/psygnal-0.11.1-py3-none-any.whl
+  sha256: 04255fe28828060a80320f8fda937c47bc0c21ca14f55a13eb7c494b165ea395
   requires_dist:
   - ipython ; extra == 'dev'
   - mypy ; extra == 'dev'

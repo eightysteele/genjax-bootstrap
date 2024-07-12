@@ -297,13 +297,13 @@ __wrap__() {
 		echo "running 'pixi run demo -e cpu'..."
 		pixi run demo -e cpu
 
-		echo "running 'pixi task list'..."
-		pixi task list
+		echo "running 'pixi install --environment cpu'..."
+		pixi install --environment cpu
 
 		printf "\nbootstrap complete! run these commands:\n"
 		printf "  1) source %s\n" "$shell_config"
 		printf "  2) cd %s\n" "$PROJECT_NAME"
-		printf "  3) pixi run demo\n\n"
+		printf "  3) pixi task list\n\n"
 	}
 
 	init-dev-environment

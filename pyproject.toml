@@ -51,7 +51,6 @@ jaxlib = ">=0.4.28"
 build-dependencies = { scipy = { version = "1.14.0.*" }, numpy = { version = "1.26.4.*" } }
 
 [tool.pixi.tasks]
-auth-check = { cmd = "check-auth.sh", cwd = "scripts", description = "ensures that you're authenticated to google artifact registry" }
 gh-create-repo = { cmd = "gh-repo-create.sh", cwd = "scripts", description = "turns the project into a new github repo" }
 
 # ------------------------------------------------------------------------------
@@ -72,7 +71,7 @@ gh-create-repo = { cmd = "gh-repo-create.sh", cwd = "scripts", description = "tu
 # cuda feature
 
 [tool.pixi.feature.cuda]
-platforms = ["linux-64"]
+platforms = ["linux-64", "osx-arm64"]
 system-requirements = { cuda = "12" }
 
 [tool.pixi.feature.cuda.target.linux-64.dependencies]

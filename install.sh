@@ -287,11 +287,15 @@ __wrap__() {
 			"$PROJECT_NAME"
 
 		pushd "$PROJECT_NAME" &>/dev/null
-		rm -rf .git
+		#rm -rf .git
 		rename-project
 
-		echo "running 'pixi install --frozen'..."
-		pixi install --frozen
+		#echo "running 'pixi install --frozen'..."
+		#pixi install --frozen
+
+		pushd scripts &>/dev/null
+		./check-auth.sh
+		popd &>/dev/null
 
 		echo "running 'pixi task list'..."
 		pixi task list
@@ -299,7 +303,7 @@ __wrap__() {
 		printf "\nbootstrap complete! run these commands:\n"
 		printf "  1) source %s\n" "$shell_config"
 		printf "  2) cd %s\n" "$PROJECT_NAME"
-		printf "  3) pixi run auth-check\n\n"
+		printf "  3) pixi run demo\n\n"
 	}
 
 	init-dev-environment

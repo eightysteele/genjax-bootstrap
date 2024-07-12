@@ -286,21 +286,25 @@ __wrap__() {
 			eightysteele/genjax-bootstrap \
 			"$PROJECT_NAME"
 
+		echo "setting up project..."
 		pushd "$PROJECT_NAME" &>/dev/null
 		rm -rf .git
 		rename-project
+		printf "  ✓ %s project is setup\n\n" "$PROJECT_NAME"
 
+		echo "authenticating google artifact registry..."
 		pushd scripts &>/dev/null
 		./check-auth.sh
 		popd &>/dev/null
 
-		echo "running 'pixi install --environment cpu'..."
+		echo "solving intial environment..."
+		echo "  'pixi install --environment cpu'..."
 		pixi install --environment cpu
 
-		printf "\nbootstrap complete! run these commands:\n"
+		printf "\ninstall done! run these commands:\n"
 		printf "  1) source %s\n" "$shell_config"
 		printf "  2) cd %s\n" "$PROJECT_NAME"
-		printf "  3) pixi task list\n\n"
+		printf "  3) pixi task list # to run a task: pixi run <task>\n\n"
 	}
 
 	init-dev-environment

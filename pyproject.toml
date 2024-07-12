@@ -2,7 +2,7 @@
 name = "frochi"
 version = "0.1.0"
 description = "Add a short description here"
-authors = [{name = "Aaron Steele", email = "eightysteele@gmail.com"}]
+authors = [{ name = "You", email = "you@frochi.com" }]
 requires-python = ">= 3.11"
 dependencies = []
 
@@ -16,13 +16,16 @@ platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
 
 [tool.pixi.pypi-options]
 index-url = "https://pypi.org/simple"
-extra-index-urls = ["https://oauth2accesstoken@us-west1-python.pkg.dev/probcomp-caliban/probcomp/simple"]
+extra-index-urls = [
+    "https://oauth2accesstoken@us-west1-python.pkg.dev/probcomp-caliban/probcomp/simple",
+]
 
 [tool.pixi.pypi-dependencies]
 frochi = { path = ".", editable = true }
 
 [tool.pixi.tasks]
-auth-check = {cmd = "check-auth.sh", cwd = "scripts", description = "ensures that you're authenticated to google artifact registry" }
+auth-check = { cmd = "check-auth.sh", cwd = "scripts", description = "ensures that you're authenticated to google artifact registry" }
+gh-create-repo = { cmd = "gh-repo-create.sh", cwd = "scripts", description = "turns the project into a new github repo" }
 
 [tool.pixi.dependencies]
 #jaxtyping = ">=0.2.28"

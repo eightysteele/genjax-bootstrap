@@ -56,6 +56,7 @@ __wrap__() {
 			;;
 		*)
 			echo "unknown shell: $shell"
+			i
 			;;
 		esac
 	}

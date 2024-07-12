@@ -76,7 +76,7 @@ gcloud-global-install() {
 }
 
 gcloud-authenticated() {
-	if gcloud auth print-access-token >/dev/null 2>&1; then
+	if gcloud auth print-access-token >/dev/null; then
 		return 0
 	else
 		return 1
@@ -152,7 +152,7 @@ main() {
 	p=$(which gcloud)
 	printf "  ✓ gcloud %s installed (%s)\n\n" "$v" "$p"
 
-	# check gcloud auty
+	# check gcloud auth
 	echo "checking gcloud auth..."
 	if ! gcloud-authenticated; then
 		echo "authenticating gcloud..."
@@ -163,7 +163,7 @@ main() {
 	fi
 	printf "  ✓ gcloud authenticated\n\n"
 
-	printf "authenticated!\n"
+	printf "→ you are authenticated to google artifact registry \o/\n"
 }
 
 main

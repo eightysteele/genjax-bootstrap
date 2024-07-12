@@ -144,7 +144,7 @@ __wrap__() {
 	}
 
 	gcloud-authenticated() {
-		if gcloud auth print-access-token >/dev/null 2>&1; then
+		if gcloud auth print-access-token &>/dev/null; then
 			return 0
 		else
 			return 1

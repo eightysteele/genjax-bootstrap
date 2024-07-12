@@ -76,7 +76,7 @@ gcloud-global-install() {
 }
 
 gcloud-authenticated() {
-	if gcloud auth print-access-token >/dev/null; then
+	if gcloud auth application-default print-access-token >/dev/null; then
 		return 0
 	else
 		return 1
@@ -92,10 +92,11 @@ gcloud-init() {
 }
 
 gcloud-auth-adc() {
-	if ! gcloud auth application-default print-access-token; then
+	if ! gcloud auth application-default login; then
 		return 1
+	else
+		return 0
 	fi
-	return 0
 }
 
 main() {

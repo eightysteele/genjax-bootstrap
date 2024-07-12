@@ -9,6 +9,7 @@ main() {
 	local project_path=""
 	project_path=$(dirname "$PWD")
 	project=$(basename "$project_path")
+	cd "$project_path"
 	git init -b main
 	gh repo create "$project" \
 		--private \

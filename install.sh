@@ -289,16 +289,17 @@ __wrap__() {
 		pushd "$PROJECT_NAME" &>/dev/null
 		rm -rf .git
 		rename-project
+
+		echo "running 'pixi install --frozen'..."
 		pixi install --frozen
 
-		echo "pixi tasks available on this machine..."
-		echo "  pixi task list"
+		echo "running 'pixi task list'..."
 		pixi task list
 
 		printf "\nbootstrap complete! run these commands:\n"
-		printf "  → source %s\n" "$shell_config"
-		printf "  → cd %s\n" "$PROJECT_NAME"
-		printf "  → pixi run auth-check\n\n"
+		printf "  1) source %s\n" "$shell_config"
+		printf "  2) cd %s\n" "$PROJECT_NAME"
+		printf "  3) pixi run auth-check\n\n"
 	}
 
 	init-dev-environment

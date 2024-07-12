@@ -6,7 +6,7 @@ PROJECT_NAME=${PROJECT_NAME:-frochi}
 
 main() {
 	local project=""
-	project=$(basename "$PWD")
+	project=$(dirname "$PWD")
 	git init -b main
 	gh repo create "$project" \
 		--private \

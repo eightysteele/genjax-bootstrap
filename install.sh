@@ -12,6 +12,7 @@ __wrap__() {
 	PIPX_BIN="$HOME/.local/bin"
 	export PATH=$PIXI_BIN:$PIPX_BIN:$PATH
 
+	echo "Project: $PROJECT_NAME"
 	pixi-installed() {
 		if command -v pixi &>/dev/null; then
 			return 0

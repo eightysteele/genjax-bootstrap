@@ -287,15 +287,15 @@ __wrap__() {
 			"$PROJECT_NAME"
 
 		pushd "$PROJECT_NAME" &>/dev/null
-		#rm -rf .git
-		#rename-project
-
-		#echo "running 'pixi install --frozen'..."
-		#pixi install --frozen
+		rm -rf .git
+		rename-project
 
 		pushd scripts &>/dev/null
 		./check-auth.sh
 		popd &>/dev/null
+
+		echo "running 'pixi run demo -e cpu'..."
+		pixi run demo -e cpu
 
 		echo "running 'pixi task list'..."
 		pixi task list

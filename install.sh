@@ -294,9 +294,6 @@ __wrap__() {
 		./check-auth.sh
 		popd &>/dev/null
 
-		echo "running 'pixi run demo -e cpu'..."
-		pixi run demo -e cpu
-
 		echo "running 'pixi install --environment cpu'..."
 		pixi install --environment cpu
 
